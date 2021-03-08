@@ -27,8 +27,9 @@ public class TestBuildGradle {
       config.setUseKieker(true);
       Mockito.when(mockedTransformer.getConfig()).thenReturn(config);
       
+      System.out.println("Build gradle - sleeping one second");
       try {
-         Thread.sleep(100);
+         Thread.sleep(1000);
       } catch (InterruptedException e) {
          e.printStackTrace();
       }
