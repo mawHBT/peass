@@ -28,6 +28,13 @@ public class DependencyDetectorIncludesTest {
 
       FileUtils.deleteDirectory(DependencyTestConstants.CURRENT);
       FileUtils.copyDirectory(DependencyTestConstants.BASIC_STATE, DependencyTestConstants.CURRENT);
+      
+      System.out.println("Created Directory: " + DependencyTestConstants.CURRENT);
+      System.out.println("Files: " + DependencyTestConstants.CURRENT.listFiles().length);
+      
+      for (File file : DependencyTestConstants.CURRENT.listFiles()) {
+         System.out.println("File in folder: " + file.getAbsolutePath());
+      }
    }
 
    @Test
