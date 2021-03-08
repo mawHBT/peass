@@ -26,6 +26,12 @@ public class TestBuildGradle {
       MeasurementConfiguration config = new MeasurementConfiguration(2);
       config.setUseKieker(true);
       Mockito.when(mockedTransformer.getConfig()).thenReturn(config);
+      
+      try {
+         Thread.sleep(100);
+      } catch (InterruptedException e) {
+         e.printStackTrace();
+      }
    }
    
    @Test
