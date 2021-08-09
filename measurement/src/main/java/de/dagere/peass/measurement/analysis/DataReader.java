@@ -1,14 +1,12 @@
 package de.dagere.peass.measurement.analysis;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.xml.bind.JAXBException;
 
-import org.apache.commons.io.filefilter.WildcardFileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -80,7 +78,7 @@ public final class DataReader {
       for (final File versionOfPair : clazzFile.listFiles()) {
          if (versionOfPair.isDirectory()) {
             for (final File versionCurrent : versionOfPair.listFiles()) {
-               for (final File measurementFile : versionCurrent.listFiles((FileFilter) new WildcardFileFilter("*.xml"))) {
+               for (final File measurementFile : versionCurrent.listFiles()) {
                   readMeasurementFile(currentMeasurement, versionOfPair, versionCurrent, measurementFile);
                }
             }
@@ -118,7 +116,6 @@ public final class DataReader {
          }
         
       } catch (final JAXBException e) {
-         LOG.error("An exception occured during reading the measurement results");
          e.printStackTrace();
       }
    }
