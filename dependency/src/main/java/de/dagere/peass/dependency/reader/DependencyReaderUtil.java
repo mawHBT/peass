@@ -115,6 +115,9 @@ public class DependencyReaderUtil {
 
    private static void handleMethodChange(final ChangeTestMapping changeTestMap, final Version version, final ClazzChangeData changedClassName) {
       for (ChangedEntity underminedChange : changedClassName.getChanges()) {
+         underminedChange.getParameters().clear();
+         
+      // Only for old dependency data analysis
          boolean contained = false;
 
          final ChangedEntity changedEntryFullName = new ChangedEntity(underminedChange.toString());

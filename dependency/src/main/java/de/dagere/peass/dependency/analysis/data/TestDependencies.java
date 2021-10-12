@@ -156,7 +156,9 @@ public class TestDependencies {
       if (!changedEntry.isOnlyMethodChange()) {
          changeTestMap.addChangeEntry(change, currentTestcase);
       } else { 
-         String method = change.getMethod() + change.getParameterString();
+//         String method = change.getMethod() + change.getParameterString();
+         // Only for old dependency data analysis
+         String method = change.getMethod();
          final Map<ChangedEntity, Set<String>> calledMethods = currentTestDependencies.getCalledMethods();
          final Set<String> calledMethodsInChangeClass = calledMethods.get(changedClass);
          if (calledMethodsInChangeClass.contains(method)) {
