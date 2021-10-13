@@ -14,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.plexus.util.xml.pull.XmlPullParserException;
 
+import de.dagere.peass.ci.NonIncludedTestRemover;
 import de.dagere.peass.config.ExecutionConfig;
 import de.dagere.peass.config.KiekerConfiguration;
 import de.dagere.peass.dependency.KiekerResultManager;
@@ -62,12 +63,16 @@ public class TraceGeneratorStarter implements Callable<Void> {
 
       Version version = dependencies.getVersions().get(newestVersion);
       TestSet tests = version.getTests();
+      
+      ExecutionConfig executionConfig = new ExecutionConfig(executionMixin);
+      NonIncludedTestRemover.removeNotIncluded(tests, executionConfig);
 
       GitUtils.reset(projectFolder);
       PeassFolders folders = new PeassFolders(projectFolder);
       
-      KiekerResultManager resultsManager = runTests(newestVersion, tests, folders);
+      KiekerResultManager resultsManager = runTests(newestVersion, tests, folders, executionConfig);
 
+      LOG.info("Analyzing tests: {}", tests.getTests());
       for (TestCase testcase : tests.getTests()) {
          writeTestcase(newestVersion, folders, resultsManager, testcase);
       }
@@ -75,9 +80,7 @@ public class TraceGeneratorStarter implements Callable<Void> {
       return null;
    }
 
-   private KiekerResultManager runTests(final String newestVersion, final TestSet tests, final PeassFolders folders) throws IOException, XmlPullParserException, InterruptedException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-      ExecutionConfig executionConfig = new ExecutionConfig(executionMixin);
-
+   private KiekerResultManager runTests(final String newestVersion, final TestSet tests, final PeassFolders folders, final ExecutionConfig executionConfig) throws IOException, XmlPullParserException, InterruptedException, ClassNotFoundException, InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
       KiekerResultManager resultsManager = new KiekerResultManager(folders, executionConfig, new KiekerConfiguration(true), new EnvironmentVariables());
       resultsManager.executeKoPeMeKiekerRun(tests, newestVersion, folders.getDependencyLogFolder());
       return resultsManager;
